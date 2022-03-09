@@ -29,6 +29,8 @@ class SplashActivity : AppCompatActivity(), View.OnClickListener {
             supportActionBar!!.hide()
         }
 
+        verifyName()
+
         editTextYourName = findViewById(R.id.editTextYourName)
         buttonSave = findViewById(R.id.buttonSave)
         buttonSave.setOnClickListener(this)
@@ -44,11 +46,21 @@ class SplashActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    private fun verifyName(){
+        val name = mSecurityPreferences.getString(MotivationConstants.KEY.PERSON_NAME)
+        if (name != ""){
+            val intent = Intent(this,MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+    }
+
     private fun handleSave() {
         val name = editTextYourName.text.toString()
         if (name.trim() != "") {
             mSecurityPreferences.storeString(MotivationConstants.KEY.PERSON_NAME, name)
             startActivity(Intent(this, MainActivity::class.java))
+            finish()
         } else {
             Toast.makeText(this, "Digite seu nome", Toast.LENGTH_SHORT).show()
         }
